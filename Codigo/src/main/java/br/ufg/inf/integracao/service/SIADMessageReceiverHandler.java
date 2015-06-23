@@ -18,7 +18,7 @@ import java.security.InvalidParameterException;
 import java.util.Locale;
 import java.util.Map;
 
-public class SIADReceiverRequestHandler implements HttpAsyncRequestHandler<HttpRequest> {
+public class SIADMessageReceiverHandler implements HttpAsyncRequestHandler<HttpRequest> {
 	public HttpAsyncRequestConsumer<HttpRequest> processRequest(final HttpRequest request, final HttpContext context) {
 		return new BasicAsyncRequestConsumer();
 	}
