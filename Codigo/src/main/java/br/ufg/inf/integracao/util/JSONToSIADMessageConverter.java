@@ -15,7 +15,7 @@ public class JSONToSIADMessageConverter {
 		JSONObject jsonObject = new JSONObject(jsonString);
 
 		boolean jsonHasAllRequiredFields = jsonObject.has("sender") && jsonObject.has("receivers") && jsonObject.has("content");
-		if(!jsonHasAllRequiredFields) {
+		if (!jsonHasAllRequiredFields) {
 			throw new InvalidParameterException("sender, receivers and content are required fields. Received '" + jsonString + "'");
 		}
 
