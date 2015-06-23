@@ -29,8 +29,15 @@ public class SIADMessage {
 
     @Override
     public String toString() {
-        return "sender: " + sender +
-                "\nreceivers: " + receivers +
-                "\ncontent: " + content;
+        String message =  "{\"sender\":\"" + sender + "\",\"receivers\":[";
+		for (int i = 0, receiversSize = receivers.size(); i < receiversSize; i++) {
+			String receiver = receivers.get(i);
+			message += "\"" + receiver + "\"";
+
+			if(i < receiversSize - 1) message += ",";
+		}
+
+		message += "],\"content\":" + content.toString() + "}";
+		return message;
     }
 }
