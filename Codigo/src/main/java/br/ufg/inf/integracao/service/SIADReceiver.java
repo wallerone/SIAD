@@ -14,7 +14,7 @@ public class SIADReceiver {
 				.setListenerPort(port)
 				.setServerInfo("SIADReceiver/0.1")
 				.setExceptionLogger(ExceptionLogger.STD_ERR)
-				.registerHandler("*", new SIADReceiverRequestHandler())
+				.registerHandler("/sendMessage", new SIADReceiverRequestHandler())
 				.create();
 
 		server.start();
