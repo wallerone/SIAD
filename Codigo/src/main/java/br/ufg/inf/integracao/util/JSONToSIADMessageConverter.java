@@ -2,21 +2,21 @@ package br.ufg.inf.integracao.util;
 
 
 import br.ufg.inf.integracao.domain.SIADMessage;
+import br.ufg.inf.integracao.exception.InvalidPayloadException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JSONToSIADMessageConverter {
-	public static SIADMessage convertJSONToSIADMessage(String jsonString) throws InvalidParameterException, JSONException {
+	public static SIADMessage convertJSONToSIADMessage(String jsonString) throws InvalidPayloadException, JSONException {
 		JSONObject jsonObject = new JSONObject(jsonString);
 
 		boolean jsonHasAllRequiredFields = jsonObject.has("sender") && jsonObject.has("receivers") && jsonObject.has("content");
 		if (!jsonHasAllRequiredFields) {
-			throw new InvalidParameterException("sender, receivers and content are required fields. Received '" + jsonString + "'");
+			throw new InvalidPayloadException("sender, receivers and content are required fields. Received '" + jsonString + "'");
 		}
 
 		String sender = jsonObject.getString("sender");

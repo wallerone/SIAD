@@ -15,7 +15,8 @@ public class SIADReceiver {
 				.setServerInfo("SIADReceiver/0.1")
 				.setExceptionLogger(ExceptionLogger.STD_ERR)
 				.registerHandler("/sendMessage", new SIADMessageReceiverHandler())
-				.registerHandler("/registerUser", new SIADRegistrarHandler())
+				.registerHandler("/registerUser", new SIADRegisterUserHandler())
+				.registerHandler("/unregisterUser", new SIADUnregisterUserHandler())
 				.create();
 
 		server.start();
