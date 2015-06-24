@@ -1,12 +1,20 @@
-package br.ufg.inf.integracao.service;
+package br.ufg.inf.integracao.handler;
 
 import br.ufg.inf.integracao.exception.InvalidUserException;
-import br.ufg.inf.integracao.util.UnregisterUserFromJSON;
-import org.apache.http.*;
+import br.ufg.inf.integracao.util.UserUtils;
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.MethodNotSupportedException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.nio.entity.NStringEntity;
-import org.apache.http.nio.protocol.*;
+import org.apache.http.nio.protocol.BasicAsyncRequestConsumer;
+import org.apache.http.nio.protocol.BasicAsyncResponseProducer;
+import org.apache.http.nio.protocol.HttpAsyncExchange;
+import org.apache.http.nio.protocol.HttpAsyncRequestConsumer;
+import org.apache.http.nio.protocol.HttpAsyncRequestHandler;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -29,7 +37,7 @@ public class SIADUnregisterUserHandler implements HttpAsyncRequestHandler<HttpRe
 		String jsonString = EntityUtils.toString(((BasicHttpEntityEnclosingRequest) request).getEntity());
 		NStringEntity entity = null;
 		try {
-			UnregisterUserFromJSON.unregisterUserFromJSON(jsonString);
+			UserUtils.unregisterUserFromJSON(jsonString);
 			response.setStatusCode(HttpStatus.SC_OK);
 			entity = new NStringEntity(jsonString, ContentType.APPLICATION_JSON);
 		} catch (InvalidUserException e) {

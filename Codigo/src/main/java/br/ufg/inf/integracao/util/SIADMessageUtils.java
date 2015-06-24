@@ -1,6 +1,5 @@
 package br.ufg.inf.integracao.util;
 
-
 import br.ufg.inf.integracao.domain.SIADMessage;
 import br.ufg.inf.integracao.exception.InvalidPayloadException;
 import org.json.JSONArray;
@@ -8,13 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_SENDER;
-import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_RECEIVERS;
 import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_CONTENT;
+import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_RECEIVERS;
+import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_SENDER;
 
-public class JSONToSIADMessageConverter {
+public class SIADMessageUtils {
 	public static SIADMessage convertJSONToSIADMessage(String jsonString) throws InvalidPayloadException, JSONException {
 		JSONObject jsonObject = new JSONObject(jsonString);
 
@@ -35,5 +36,26 @@ public class JSONToSIADMessageConverter {
 		JSONObject content = jsonObject.getJSONObject(JSON_KEY_CONTENT);
 
 		return new SIADMessage(sender, receivers, content);
+	}
+
+	public static Map<String, JSONObject> convertSIADMessageToSingleRecipientJSON(SIADMessage message) {
+		Map<String, JSONObject> jsonPerRecipient = new HashMap<>();
+
+		String sender = message.getSender();
+		JSONObject content = message.getContent();
+		for (String receiver : message.getReceivers()) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put(JSON_KEY_SENDER, sender);
+
+			JSONArray recepientArray = new JSONArray();
+			recepientArray.put(receiver);
+			jsonObject.put(JSON_KEY_RECEIVERS, recepientArray);
+
+			jsonObject.put(JSON_KEY_CONTENT, content);
+
+			jsonPerRecipient.put(receiver, jsonObject);
+		}
+
+		return jsonPerRecipient;
 	}
 }

@@ -1,14 +1,22 @@
-package br.ufg.inf.integracao.service;
+package br.ufg.inf.integracao.handler;
 
 import br.ufg.inf.integracao.domain.SIADMessage;
 import br.ufg.inf.integracao.exception.InvalidPayloadException;
-import br.ufg.inf.integracao.util.JSONToSIADMessageConverter;
-import br.ufg.inf.integracao.util.SIADMessageToJSONConverter;
-import org.apache.http.*;
+import br.ufg.inf.integracao.service.JSONFileService;
+import br.ufg.inf.integracao.util.SIADMessageUtils;
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.MethodNotSupportedException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.nio.entity.NStringEntity;
-import org.apache.http.nio.protocol.*;
+import org.apache.http.nio.protocol.BasicAsyncRequestConsumer;
+import org.apache.http.nio.protocol.BasicAsyncResponseProducer;
+import org.apache.http.nio.protocol.HttpAsyncExchange;
+import org.apache.http.nio.protocol.HttpAsyncRequestConsumer;
+import org.apache.http.nio.protocol.HttpAsyncRequestHandler;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -36,8 +44,8 @@ public class SIADMessageReceiverHandler implements HttpAsyncRequestHandler<HttpR
 		NStringEntity entity = null;
 
 		try {
-			SIADMessage message = JSONToSIADMessageConverter.convertJSONToSIADMessage(jsonString);
-			Map<String, JSONObject> jsonPerRecipient = SIADMessageToJSONConverter.convertSIADMessageToSingleRecipientJSON(message);
+			SIADMessage message = SIADMessageUtils.convertJSONToSIADMessage(jsonString);
+			Map<String, JSONObject> jsonPerRecipient = SIADMessageUtils.convertSIADMessageToSingleRecipientJSON(message);
 			for (Map.Entry<String, JSONObject> entry : jsonPerRecipient.entrySet()) {
 				JSONFileService.getInstance().saveJSONObjectToFile(entry.getKey(), entry.getValue());
 			}

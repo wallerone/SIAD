@@ -35,7 +35,7 @@ public class JSONFileService {
 		File directory = null;
 		try {
 			directory = new File(folderPath);
-			if(directory.isDirectory() || directory.mkdirs()) {
+			if (directory.isDirectory() || directory.mkdirs()) {
 				fileWriter = new FileWriter(filePath);
 				fileWriter.write(json.toString());
 			} else {
