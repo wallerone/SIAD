@@ -19,7 +19,7 @@ public class SIADMessageToJSONConverter {
 
 			JSONArray recepientArray = new JSONArray();
 			recepientArray.put(receiver);
-			jsonObject.put("receiver", recepientArray);
+			jsonObject.put("receivers", recepientArray);
 
 			jsonObject.put("content", content);
 
