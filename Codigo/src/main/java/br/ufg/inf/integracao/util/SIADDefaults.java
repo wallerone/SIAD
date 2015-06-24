@@ -17,4 +17,5 @@ public class SIADDefaults {
 	public static final String DELETE_USER_ENDPOINT = "/unregisterUser";
 
 	public static final String SIAD_SERVER_STRING = "SIADServer/0.5";
+	public static final Integer SIAD_SERVER_PORT = 8080;
 }

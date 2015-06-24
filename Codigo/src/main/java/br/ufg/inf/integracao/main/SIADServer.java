@@ -3,7 +3,6 @@ package br.ufg.inf.integracao.main;
 import br.ufg.inf.integracao.handler.SIADMessageReceiverHandler;
 import br.ufg.inf.integracao.handler.SIADRegisterUserHandler;
 import br.ufg.inf.integracao.handler.SIADUnregisterUserHandler;
-import br.ufg.inf.integracao.service.SIADRegistrarService;
 import br.ufg.inf.integracao.service.SIADSenderService;
 import org.apache.http.ExceptionLogger;
 import org.apache.http.impl.nio.bootstrap.ServerBootstrap;
@@ -13,10 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static br.ufg.inf.integracao.util.SIADDefaults.NEW_MESSAGE_ENDPOINT;
-import static br.ufg.inf.integracao.util.SIADDefaults.NEW_USER_ENDPOINT;
-import static br.ufg.inf.integracao.util.SIADDefaults.DELETE_USER_ENDPOINT;
-import static br.ufg.inf.integracao.util.SIADDefaults.SIAD_SERVER_STRING;
+import static br.ufg.inf.integracao.util.SIADDefaults.*;
 
 public class SIADServer extends Thread {
 
@@ -31,9 +27,8 @@ public class SIADServer extends Thread {
 		logger.info("Preparing SIADServer...");
 		SIADSenderService.getInstance().start();
 
-		int port = 8080;
 		server = ServerBootstrap.bootstrap()
-				.setListenerPort(port)
+				.setListenerPort(SIAD_SERVER_PORT)
 				.setServerInfo(SIAD_SERVER_STRING)
 				.setExceptionLogger(ExceptionLogger.STD_ERR)
 				.registerHandler(NEW_MESSAGE_ENDPOINT, new SIADMessageReceiverHandler())
