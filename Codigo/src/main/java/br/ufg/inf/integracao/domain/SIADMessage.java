@@ -4,6 +4,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_SENDER;
+import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_RECEIVERS;
+import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_CONTENT;
+
 public class SIADMessage {
 	private final String sender;
 	private final List<String> receivers;
@@ -29,7 +33,7 @@ public class SIADMessage {
 
 	@Override
 	public String toString() {
-		String message = "{\"sender\":\"" + sender + "\",\"receivers\":[";
+		String message = "{\"" + JSON_KEY_SENDER + "\":\"" + sender + "\",\"" + JSON_KEY_RECEIVERS + "\":[";
 		for (int i = 0, receiversSize = receivers.size(); i < receiversSize; i++) {
 			String receiver = receivers.get(i);
 			message += "\"" + receiver + "\"";
@@ -37,7 +41,7 @@ public class SIADMessage {
 			if (i < receiversSize - 1) message += ",";
 		}
 
-		message += "],\"content\":" + content.toString() + "}";
+		message += "],\"" + JSON_KEY_CONTENT + "\":" + content.toString() + "}";
 		return message;
 	}
 }
