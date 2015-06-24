@@ -3,6 +3,8 @@ package br.ufg.inf.integracao.main;
 import br.ufg.inf.integracao.handler.SIADMessageReceiverHandler;
 import br.ufg.inf.integracao.handler.SIADRegisterUserHandler;
 import br.ufg.inf.integracao.handler.SIADUnregisterUserHandler;
+import br.ufg.inf.integracao.service.SIADRegistrarService;
+import br.ufg.inf.integracao.service.SIADSenderService;
 import org.apache.http.ExceptionLogger;
 import org.apache.http.impl.nio.bootstrap.ServerBootstrap;
 import org.apache.http.impl.nio.bootstrap.HttpServer;
@@ -17,6 +19,10 @@ import static br.ufg.inf.integracao.util.SIADDefaults.SIAD_SERVER_STRING;
 public class SIADServer {
 
 	public static void main(String[] args) throws Exception {
+
+		SIADRegistrarService.getInstance().registerUser("me", "http://blessedguy.com/teste");
+		SIADSenderService.getInstance().start();
+
 		int port = 8080;
 		final HttpServer server = ServerBootstrap.bootstrap()
 				.setListenerPort(port)
@@ -33,6 +39,7 @@ public class SIADServer {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
+				SIADSenderService.getInstance().requestStop();
 				server.shutdown(5, TimeUnit.SECONDS);
 			}
 		});

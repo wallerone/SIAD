@@ -22,13 +22,16 @@ public class JSONFileService {
 		return instance;
 	}
 
-	public void saveJSONObjectToFile(String destination, JSONObject json) throws IOException {
+	public String getFolderPathForReceiver(String receiver) {
+		return SIAD_HOME + separator
+				+ SIAD_FOLDER_NAME + separator
+				+ receiver;
+	}
+
+	public void saveJSONObjectToFile(String receiver, JSONObject json) throws IOException {
 		String timestamp = new SimpleDateFormat(SIAD_TIMESTAMP_FORMAT).format(new Date());
 
-		String folderPath = SIAD_HOME + separator
-				+ SIAD_FOLDER_NAME + separator
-				+ destination;
-
+		String folderPath = getFolderPathForReceiver(receiver);
 		String filePath = folderPath + separator + timestamp + JSON_EXTENSION;
 
 		FileWriter fileWriter = null;

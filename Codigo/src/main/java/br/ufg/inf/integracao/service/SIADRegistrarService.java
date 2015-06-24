@@ -5,6 +5,7 @@ import br.ufg.inf.integracao.exception.InvalidUserException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static br.ufg.inf.integracao.util.SIADDefaults.JSON_KEY_ALIAS;
 
@@ -15,6 +16,10 @@ public class SIADRegistrarService {
 
 	public static SIADRegistrarService getInstance() {
 		return service;
+	}
+
+	public Set<String> getUsers() {
+		return users.keySet();
 	}
 
 	public void registerUser(String alias, String address) throws DuplicateUserException {
