@@ -8,33 +8,44 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Felipe on 23/06/2015.
- */
+import static br.ufg.inf.integracao.util.SIADDefaults.JSON_EXTENSION;
+import static br.ufg.inf.integracao.util.SIADDefaults.SIAD_HOME;
+import static br.ufg.inf.integracao.util.SIADDefaults.SIAD_FOLDER_NAME;
+import static br.ufg.inf.integracao.util.SIADDefaults.SIAD_TIMESTAMP_FORMAT;
+import static java.io.File.separator;
+
 public class JSONFileService {
-    public static void saveJSONObjectToFile(String destination, JSONObject json) throws IOException {
 
+	private static JSONFileService instance = new JSONFileService();
 
-        SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        String dataHora = f.format(new Date());
+	public static JSONFileService getInstance() {
+		return instance;
+	}
 
-        String pasta = System.getProperty("user.dir") + File.separator + "siad" + File.separator;
-        pasta = pasta.concat(destination + File.separator);
+	public void saveJSONObjectToFile(String destination, JSONObject json) throws IOException {
+		String timestamp = new SimpleDateFormat(SIAD_TIMESTAMP_FORMAT).format(new Date());
 
-        FileWriter file = new FileWriter(pasta + dataHora + ".json");
+		String folderPath = SIAD_HOME + separator
+				+ SIAD_FOLDER_NAME + separator
+				+ destination;
 
-        try {
+		String filePath = folderPath + separator + timestamp + JSON_EXTENSION;
 
-            file.write(json.toString());
-
-        } catch (IOException e) {
-
-            throw e;
-
-        } finally {
-            file.flush();
-            file.close();
-        }
-
-    }
+		FileWriter fileWriter = null;
+		File directory = null;
+		try {
+			directory = new File(folderPath);
+			if(directory.isDirectory() || directory.mkdirs()) {
+				fileWriter = new FileWriter(filePath);
+				fileWriter.write(json.toString());
+			} else {
+				throw new IOException("Directory " + folderPath + " doesn't exist and can't be created");
+			}
+		} finally {
+			if (fileWriter != null) {
+				fileWriter.flush();
+				fileWriter.close();
+			}
+		}
+	}
 }

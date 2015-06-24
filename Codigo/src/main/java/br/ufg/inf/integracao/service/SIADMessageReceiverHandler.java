@@ -38,12 +38,14 @@ public class SIADMessageReceiverHandler implements HttpAsyncRequestHandler<HttpR
 		try {
 			SIADMessage message = JSONToSIADMessageConverter.convertJSONToSIADMessage(jsonString);
 			Map<String, JSONObject> jsonPerRecipient = SIADMessageToJSONConverter.convertSIADMessageToSingleRecipientJSON(message);
-			// TODO salvar cada json no diretório correto (um para cada destino)
+			for (Map.Entry<String, JSONObject> entry : jsonPerRecipient.entrySet()) {
+				JSONFileService.getInstance().saveJSONObjectToFile(entry.getKey(), entry.getValue());
+			}
 
 			response.setStatusCode(HttpStatus.SC_OK);
 			entity = new NStringEntity(message.toString(), ContentType.create("text/html", "UTF-8"));
 			response.setEntity(entity);
-		} catch (InvalidPayloadException e) {
+		} catch (InvalidPayloadException | IOException e) {
 			response.setStatusCode(HttpStatus.SC_BAD_REQUEST);
 			entity = new NStringEntity(e.getMessage(), ContentType.DEFAULT_TEXT);
 		} finally {
