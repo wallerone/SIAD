@@ -47,7 +47,7 @@ public class SIADMessageReceiverHandler implements HttpAsyncRequestHandler<HttpR
 			SIADMessage message = SIADMessageUtils.convertJSONToSIADMessage(jsonString);
 			Map<String, JSONObject> jsonPerRecipient = SIADMessageUtils.convertSIADMessageToSingleRecipientJSON(message);
 			for (Map.Entry<String, JSONObject> entry : jsonPerRecipient.entrySet()) {
-				JSONFileService.getInstance().saveJSONObjectToFile(entry.getKey(), entry.getValue());
+				JSONFileService.getInstance().saveSingleMessageJSONObjectToFile(entry.getKey(), entry.getValue());
 			}
 
 			response.setStatusCode(HttpStatus.SC_OK);
