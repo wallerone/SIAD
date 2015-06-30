@@ -65,7 +65,7 @@ public class SIADRegistrarService {
 
 	private void readUsersFile() {
 		try {
-			JSONObject jsonObject = JSONFileService.getInstance().readDataJSONObjectFromFile("users");
+			JSONObject jsonObject = JSONFileService.getInstance().readDataJSONObjectFromFile("users", true);
 			for (Object key : jsonObject.keySet()) {
 				String alias = key.toString();
 				String address = jsonObject.getString(alias);

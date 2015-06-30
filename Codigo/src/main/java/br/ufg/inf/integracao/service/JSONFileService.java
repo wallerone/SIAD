@@ -82,13 +82,19 @@ public class JSONFileService {
 		}
 	}
 
-	public JSONObject readDataJSONObjectFromFile(String filename) throws IOException {
+	public JSONObject readDataJSONObjectFromFile(String filename, boolean createFile) throws IOException {
 		String folderPath = getFolderPathForData();
 		String filePath = folderPath + separator + filename + JSON_EXTENSION;
 		File file = new File(filePath);
 
 		if(!file.exists()) {
-			throw new IOException("File at path " + filePath + " doesn't exist");
+			if (createFile) {
+				JSONObject emptyJSONObject = new JSONObject();
+				saveDataJSONObjectToFile(filename, emptyJSONObject);
+				return emptyJSONObject;
+			} else {
+				throw new IOException("File at path " + filePath + " doesn't exist");
+			}
 		}
 
 		List<String> jsonLines = Files.readAllLines(file.toPath(), Charset.defaultCharset());
